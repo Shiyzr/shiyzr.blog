@@ -15,9 +15,9 @@ export const siteConfig = {
   
   // Hero Section
   hero: {
-    prefix: "I am",
-    name: "Someone Name",
-    intro: "I am a web developer and blogger, passionate about sharing knowledge and building cool things with code.\nWelcome to my portfolio blog!",
+    prefix: "我是",
+    name: "Shiyzr",
+    intro: "PKU 信息科学技术学院在读本科生\n欢迎来到我的博客!",
     avatar: "/image/20943608.jpeg",
     buttons: {
       viewPosts: "View Posts",
@@ -34,7 +34,7 @@ export const siteConfig = {
   // About Section
   about: {
     title: "About Me",
-    text: "Hi, I'm Someone, a passionate web developer and blogger. I love exploring new technologies and sharing knowledge with the community. On this blog, you'll find my thoughts on web development, tutorials, and project showcases. I hope my content can inspire others in their coding journey.",
+    text: "Hi, I'm Shiyzr, a passionate web developer and blogger. I love exploring new technologies and sharing knowledge with the community. On this blog, you'll find my thoughts on web development, tutorials, and project showcases. I hope my content can inspire others in their coding journey.",
   },
   
   // Contact Page
@@ -44,26 +44,27 @@ export const siteConfig = {
     info: {
       email: {
         label: "Email",
-        value: "tom@example.com",
-        link: "mailto:tom@example.com",
+        value: "shiyzr@stu.pku.edu.cn",
+        link: "mailto:shiyzr@stu.pku.edu.cn",
       },
-      phone: {
-        label: "Phone",
-        value: "+1 (234) 567-890",
-        link: "tel:+1 (234) 567-890",
-      },
+      // phone: {
+      //   label: "Phone",
+      //   value: "+1 (234) 567-890",
+      //   link: "tel:+1 (234) 567-890",
+      // },
       location: {
         label: "Location",
-        value: "San Francisco, CA",
+        value: "Beijing, China",
       },
     },
     followMe: {
       title: "Follow Me",
       links: [
-        { name: "Twitter", icon: "/svg/twitter.svg", url: "https://x.com/astrodotbuild" },
-        { name: "LinkedIn", icon: "/svg/linkedin.svg", url: "https://www.linkedin.com/company/astrodotbuild" },
-        { name: "Facebook", icon: "/svg/facebook.svg", url: "https://www.facebook.com/astrodotbuild" },
-        { name: "GitHub", icon: "/svg/github.svg", url: "https://github.com/tomcomtang/astro-cartoon-portfolio" },
+        { name: "Twitter", icon: "/svg/twitter.svg", url: "https://x.com/ShiYzr" },
+        // { name: "LinkedIn", icon: "/svg/linkedin.svg", url: "https://www.linkedin.com/company/astrodotbuild" },
+        // { name: "Facebook", icon: "/svg/facebook.svg", url: "https://www.facebook.com/astrodotbuild" },
+        { name: "Bilibili", icon: "/svg/bilibili.svg", url: "https://space.bilibili.com/2036117977" },
+        { name: "GitHub", icon: "/svg/github.svg", url: "https://github.com/Shiyzr" },
       ],
     },
     footerText: [
@@ -75,15 +76,15 @@ export const siteConfig = {
   
   // Footer
   footer: {
-    copyright: "© 2025 Someone. All rights reserved.",
+    copyright: "© 2026 Shiyzr. All rights reserved.",
     links: [
       { text: "Privacy Policy", url: "#" },
       { text: "Terms of Service", url: "#" },
       { text: "Sitemap", url: "#" },
     ],
     github: {
-      text: "Star this project on Github",
-      url: "https://github.com/tomcomtang/astro-cartoon-portfolio",
+      text: "Give me stars on Github",
+      url: "https://github.com/Shiyzr",
     },
   },
   

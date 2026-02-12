@@ -4,7 +4,7 @@ import "../styles/comments.css";
 import "../styles/page-transitions.css";
 import Navigation from "../components/Navigation.astro";
 import Footer from "../components/Footer.astro";
-import GiscusComments from "../components/GiscusComments";
+import WalineComments from "../components/WalineComments";
 import { siteConfig } from "../config/site";
 ---
 
@@ -113,7 +113,7 @@ import { siteConfig } from "../config/site";
         </div>
 
         <div class="comments-section comments-content-animate">
-          <GiscusComments client:load />
+          <WalineComments client:load />
         </div>
       </div>
     </main>

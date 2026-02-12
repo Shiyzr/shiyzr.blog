@@ -2,11 +2,11 @@
 import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
-import edgeoneAdapter from '@edgeone/astro';
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: edgeoneAdapter(),
+  adapter: vercel(),
   output: 'static',
   integrations: [react()]
 });
