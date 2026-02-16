@@ -17,12 +17,7 @@ const WalineComments: React.FC<WalineCommentsProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const walineServerURL = serverURL || import.meta.env.PUBLIC_WALINE_SERVER_URL;
-
-    if (!walineServerURL) {
-      console.warn('Waline serverURL is missing. Please provide it via props or PUBLIC_WALINE_SERVER_URL env var.');
-      return;
-    }
+    const walineServerURL = serverURL ?? 'https://comment.shiyzr-blog.top/';
 
     walineInstanceRef.current = init({
       el: containerRef.current,
