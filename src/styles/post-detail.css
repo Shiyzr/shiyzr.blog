@@ -326,16 +326,18 @@
   content: none;
 }
 
-.post-detail-page .post-content :global(blockquote) {
-  border-left: 4px solid #76cfc5;
-  padding-left: 1rem;
-  margin: 24px 0 !important;
-  color: #666;
-  font-style: italic;
+.post-detail-page .post-content blockquote {
+  border-left: 4px solid #76cfc5 !important;
+  background: rgba(118, 207, 197, 0.06) !important;
+  padding: 0.9rem 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  border-radius: 6px !important;
+  color: #555 !important;
+  font-style: italic !important;
   text-align: left !important;
 }
 
-.post-detail-page .post-content :global(blockquote) :global(:last-child) {
+.post-detail-page .post-content blockquote :last-child {
   margin-bottom: 0;
 }
 

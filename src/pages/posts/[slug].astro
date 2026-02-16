@@ -56,12 +56,16 @@ if (
   // Render markdown using unified/remark
   const { unified } = await import("unified");
   const remarkParse = (await import("remark-parse")).default;
+  const remarkMath = (await import("remark-math")).default;
   const remarkRehype = (await import("remark-rehype")).default;
+  const rehypeKatex = (await import("rehype-katex")).default;
   const rehypeStringify = (await import("rehype-stringify")).default;
 
   const processor = unified()
     .use(remarkParse)
+    .use(remarkMath)
     .use(remarkRehype)
+    .use(rehypeKatex)
     .use(rehypeStringify);
 
   const result = await processor.process(post.body);
@@ -79,6 +83,10 @@ if (
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    />
     <title>{post.data.title} - Astro Blog</title>
     <script>
       // Disable browser scroll restoration and ensure page starts at top
