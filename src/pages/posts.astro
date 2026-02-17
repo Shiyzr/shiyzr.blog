@@ -57,28 +57,20 @@ function extractExcerptFromMarkdown(
 // Transform content collection posts to match the expected format
 const posts = await Promise.all(
   allPosts.map(async (post: any) => {
-    // Get slug from post - try multiple fallbacks
-    // In Astro, post.slug should be available, but if not, extract from id
-    let slug = post.slug;
+    let slug = post.data.slug || post.slug;
     if (!slug && post.id) {
-      // Extract slug from id (e.g., "posts/my-post.md" -> "my-post")
       slug = post.id.split("/").pop()?.replace(/\.md$/, "") || "";
     }
     if (!slug) {
       console.warn("Post missing slug:", post);
     }
 
-    // Try to get excerpt from frontmatter first
     let excerpt = post.data.excerpt;
 
-    // If no excerpt in frontmatter, generate a default excerpt from title
     if (!excerpt) {
-      // In Astro 6.0, post.body is no longer available
-      // Use a default excerpt based on title or provide a generic message
       excerpt = `Read more about ${post.data.title}...`;
     }
 
-    // Get image from frontmatter, fallback to mapping, then default
     const image = post.data.image || postImages[slug] || defaultPostImage;
 
     return {

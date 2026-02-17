@@ -5,6 +5,7 @@ author: "Shiyzr"
 tags: ["ai"]
 readTime: "0 min read"
 excerpt: "cs336破防实录"
+slug: "llm-notes-2"
 ---
 ## 流程回顾
 1. 先搞到一堆训练数据（正常人话就行）。

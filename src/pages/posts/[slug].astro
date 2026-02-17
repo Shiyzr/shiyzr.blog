@@ -11,10 +11,8 @@ export async function getStaticPaths() {
   const posts = (await getCollection("posts")) as any[];
   return posts
     .map((post) => {
-      // Get slug from post - try multiple fallbacks
-      let slug = post.slug;
+      let slug = post.data.slug || post.slug;
       if (!slug && post.id) {
-        // Extract slug from id (e.g., "posts/my-post.md" -> "my-post")
         slug = post.id.split("/").pop()?.replace(/\.md$/, "") || "";
       }
       if (!slug) {
