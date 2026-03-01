@@ -1,8 +1,8 @@
 // Site-wide configuration
 export const siteConfig = {
   // Site metadata
-  name: "Astro Blog",
-  title: "Astro Blog",
+  name: "Shiyzr Blog",
+  title: "Shiyzr Blog",
   description: "A modern blog built with Astro",
   
   // Navigation
@@ -34,7 +34,7 @@ export const siteConfig = {
   // About Section
   about: {
     title: "About Me",
-    text: "Hi, I'm Shiyzr, a passionate web developer and blogger. I love exploring new technologies and sharing knowledge with the community. On this blog, you'll find my thoughts on web development, tutorials, and project showcases. I hope my content can inspire others in their coding journey.",
+    text: "Hi, I'm Shiyzr, a passionate blogger. I hope my content can inspire others in their coding journey.",
   },
   
   // Contact Page
@@ -91,7 +91,7 @@ export const siteConfig = {
   // Posts Page
   posts: {
     title: "Blog Posts",
-    subtitle: "Explore our latest articles on web development, design, and technology",
+    subtitle: "Explore my latest articles on web development, design, and technology",
     searchPlaceholder: "Search posts...",
   },
   

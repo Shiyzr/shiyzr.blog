@@ -77,7 +77,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.2rem;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
   flex-wrap: wrap;
 }
 
@@ -238,6 +238,7 @@
 
 .post-detail-page .post-content :global(li) :global(p) {
   margin-bottom: 12px !important;
+  margin-top: 0 !important;
 }
 
 .post-detail-page .post-content :global(li) :global(ul),
@@ -351,6 +352,40 @@
   padding: 0;
 }
 
+.post-detail-page .post-content :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.post-detail-page .post-content :global(thead) {
+  background-color: #f7fafc;
+}
+
+.post-detail-page .post-content :global(th),
+.post-detail-page .post-content :global(td) {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.post-detail-page .post-content :global(tr:nth-child(even)) {
+  background-color: #fdfdfd;
+}
+
+.post-detail-page .post-content :global(.mermaid) {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
 .post-detail-page .post-content :global(img) {
   border-style: none;
   max-width: 100%;
@@ -430,3 +465,56 @@
   }
 }
 
+/* Post Footer Styles */
+.post-footer {
+  margin-top: 3rem;
+  border-top: 1px solid #e9ecef;
+  padding-top: 2rem;
+  width: 100%;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 2px solid #76cfc5;
+  border-radius: 20px;
+  background-color: rgba(118, 207, 197, 0.1);
+  color: #76cfc5;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.tag:hover {
+  background-color: #76cfc5;
+  color: white;
+}
+
+.post-nav {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.back-link {
+  color: #76cfc5;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.back-link:hover {
+  color: #5bb0a8;
+  text-decoration: underline;
+}

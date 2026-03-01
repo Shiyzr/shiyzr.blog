@@ -7,6 +7,8 @@ import "../../styles/page-transitions.css";
 import Navigation from "../../components/Navigation.astro";
 import Footer from "../../components/Footer.astro";
 
+import { siteConfig } from "../../config/site";
+
 export async function getStaticPaths() {
   const posts = (await getCollection("posts")) as any[];
   return posts
@@ -55,6 +57,7 @@ if (
   const { unified } = await import("unified");
   const remarkParse = (await import("remark-parse")).default;
   const remarkMath = (await import("remark-math")).default;
+  const remarkGfm = (await import("remark-gfm")).default;
   const remarkRehype = (await import("remark-rehype")).default;
   const rehypeKatex = (await import("rehype-katex")).default;
   const rehypeStringify = (await import("rehype-stringify")).default;
@@ -62,6 +65,7 @@ if (
   const processor = unified()
     .use(remarkParse)
     .use(remarkMath)
+    .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeKatex)
     .use(rehypeStringify);
@@ -73,6 +77,17 @@ if (
     `Cannot find content in post. Available keys: ${Object.keys(post).join(", ")}`
   );
 }
+
+// Format date
+const formattedDate = new Date(post.data.date).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+// Calculate read time
+const wordCount = post.body ? post.body.split(/\s+/g).length : 0;
+const readTime = Math.ceil(wordCount / 200);
 ---
 
 <html lang="en">
@@ -85,7 +100,7 @@ if (
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
     />
-    <title>{post.data.title} - Astro Blog</title>
+    <title>{post.data.title} - {siteConfig.title}</title>
     <script>
       // Disable browser scroll restoration and ensure page starts at top
       if ("scrollRestoration" in history) {
@@ -99,232 +114,238 @@ if (
     <Navigation />
 
     <main class="post-detail-page">
-      <div class="post-detail-container page-content">
-        <div class="post-header-card post-header-animate">
+      <div class="post-detail-container">
+        <div class="post-header-card">
+          <div style="margin-bottom: 1.5rem;">
+            <a href="/" class="post-back-button">← Back to Home</a>
+          </div>
           <h1 class="post-detail-title">{post.data.title}</h1>
-          {
-            post.data.tags && post.data.tags.length > 0 && (
-              <div class="post-detail-tags">
-                {post.data.tags.map((tag: string) => (
-                  <span class="post-detail-tag">{tag}</span>
-                ))}
-              </div>
-            )
-          }
           <div class="post-detail-meta">
-            <a href="/posts" class="post-back-button"> ← Back to Posts </a>
+            <div class="post-detail-tags">
+            {
+              post.data.tags &&
+                post.data.tags.map((tag: string) => (
+                  <span class="post-detail-tag">{tag}</span>
+                ))
+            }
+          </div>
             <div class="post-detail-meta-info">
               <img
-                src="/image/20943608.jpeg"
-                alt={post.data.author || "Someone"}
+                src={siteConfig.hero.avatar}
+                alt={siteConfig.hero.name}
                 class="post-detail-avatar"
               />
-              <span class="post-detail-author"
-                >{post.data.author || "Someone"}</span
-              >
-              <span class="post-detail-date">{post.data.date}</span>
-              <span class="post-detail-read-time">{post.data.readTime}</span>
+              <span class="post-detail-author">{siteConfig.hero.name}</span>
+              <span class="post-detail-date">• {formattedDate}</span>
+              <span class="post-detail-read-time">• {readTime} min read</span>
             </div>
           </div>
         </div>
 
-        <div class="post-content post-content-animate">
-          {
-            typeof Content === "function" ? (
-              <Content />
-            ) : (
-              <div set:html={Content} />
-            )
-          }
+        <article class="post-content" set:html={Content} />
+
+        <div class="post-footer">
+          <div class="post-tags">
+            {
+              post.data.tags &&
+                post.data.tags.map((tag: string) => (
+                  <span class="tag">{tag}</span>
+                ))
+            }
+          </div>
+          <div class="post-nav">
+            <a href="/" class="back-link">← Back to Home</a>
+          </div>
         </div>
       </div>
+
     </main>
 
     <Footer />
 
     <script>
-      // Ensure scroll position is at top after DOM loads
-      document.addEventListener("DOMContentLoaded", () => {
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 0);
-      });
-      // Also ensure on page show (handles back/forward navigation)
-      window.addEventListener("pageshow", (event) => {
-        if (event.persisted) {
-          window.scrollTo(0, 0);
-        }
-      });
+      // Helper function to get computed CSS variable value
+      const getCSSVar = (name, defaultValue) => {
+        const value = getComputedStyle(document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+        return value || defaultValue;
+      };
 
-      // Initialize page transition animations
-      document.addEventListener("DOMContentLoaded", () => {
-        // Trigger page content animation
-        const pageContent = document.querySelector(".page-content");
-        if (pageContent) {
-          requestAnimationFrame(() => {
-            pageContent.classList.add("visible");
-          });
-        }
+      // Function to apply heading spacing using CSS variables
+      const applyHeadingSpacing = () => {
+        const postContent = document.querySelector(".post-content");
+        if (!postContent) return;
 
-        // Trigger header animation
-        const header = document.querySelector(".post-header-animate");
-        if (header) {
-          requestAnimationFrame(() => {
-            header.classList.add("visible");
-          });
-        }
-
-        // Trigger content animation
-        const content = document.querySelector(".post-content-animate");
-        if (content) {
-          requestAnimationFrame(() => {
-            content.classList.add("visible");
-          });
-        }
-
-        // Apply heading spacing using CSS variables - elegant implementation
-        const applyHeadingSpacing = () => {
-          const postContent = document.querySelector(".post-content");
-          if (!postContent) return;
-
-          const rootStyles = getComputedStyle(document.documentElement);
-          const getCSSVar = (name: string, fallback: string) =>
-            rootStyles.getPropertyValue(name).trim() || fallback;
-
-          // Heading configuration - centralized and maintainable
-          const headingConfig = [
-            {
-              selector: "h2",
-              marginTopVar: "--post-h2-margin-top",
-              marginBottomVar: "--post-h2-margin-bottom",
-              contentMarginTopVar: "--post-h2-content-margin-top",
-              defaults: {
-                marginTop: "3rem",
-                marginBottom: "1.17rem",
-                contentMarginTop: "1.17rem",
-              },
-              skipFirstMarginTop: true,
+        // Configuration for different heading levels
+        const headingConfig = [
+          {
+            selector: "h2",
+            marginTopVar: "--post-h2-margin-top",
+            marginBottomVar: "--post-h2-margin-bottom",
+            contentMarginTopVar: "--post-h2-content-margin-top",
+            defaults: {
+              marginTop: "3rem",
+              marginBottom: "1.17rem",
+              contentMarginTop: "1.17rem",
             },
-            {
-              selector: "h3",
-              marginTopVar: "--post-h3-margin-top",
-              marginBottomVar: "--post-h3-margin-bottom",
-              contentMarginTopVar: "--post-h3-content-margin-top",
-              defaults: {
-                marginTop: "2.5rem",
-                marginBottom: "1rem",
-                contentMarginTop: "1rem",
-              },
-              skipFirstMarginTop: false,
+            skipFirstMarginTop: true,
+          },
+          {
+            selector: "h3",
+            marginTopVar: "--post-h3-margin-top",
+            marginBottomVar: "--post-h3-margin-bottom",
+            contentMarginTopVar: "--post-h3-content-margin-top",
+            defaults: {
+              marginTop: "2.5rem",
+              marginBottom: "1rem",
+              contentMarginTop: "1rem",
             },
-            {
-              selector: "h4",
-              marginTopVar: "--post-h4-margin-top",
-              marginBottomVar: "--post-h4-margin-bottom",
-              contentMarginTopVar: "--post-h4-content-margin-top",
-              defaults: {
-                marginTop: "2rem",
-                marginBottom: "0.83rem",
-                contentMarginTop: "0.83rem",
-              },
-              skipFirstMarginTop: false,
+            skipFirstMarginTop: false,
+          },
+          {
+            selector: "h4",
+            marginTopVar: "--post-h4-margin-top",
+            marginBottomVar: "--post-h4-margin-bottom",
+            contentMarginTopVar: "--post-h4-content-margin-top",
+            defaults: {
+              marginTop: "2rem",
+              marginBottom: "0.83rem",
+              contentMarginTop: "0.83rem",
             },
-          ];
+            skipFirstMarginTop: false,
+          },
+        ];
 
-          const contentTags = ["P", "UL", "OL", "PRE"];
+        const contentTags = ["P", "UL", "OL", "PRE"];
 
-          // Process each heading type using configuration
-          headingConfig.forEach((config) => {
-            const headings = postContent.querySelectorAll(config.selector);
-            const marginTop = getCSSVar(
-              config.marginTopVar,
-              config.defaults.marginTop
-            );
-            const marginBottom = getCSSVar(
-              config.marginBottomVar,
-              config.defaults.marginBottom
-            );
-            const contentMarginTop = getCSSVar(
-              config.contentMarginTopVar,
-              config.defaults.contentMarginTop
-            );
-
-            headings.forEach((heading) => {
-              if (!(heading instanceof HTMLElement)) return;
-
-              // Apply heading margins
-              if (
-                config.skipFirstMarginTop &&
-                heading.previousElementSibling === null
-              ) {
-                heading.style.marginTop = "0";
-              } else {
-                heading.style.marginTop = marginTop;
-              }
-              heading.style.marginBottom = marginBottom;
-
-              // Apply content spacing after heading
-              const nextElement = heading.nextElementSibling;
-              if (
-                nextElement instanceof HTMLElement &&
-                contentTags.includes(nextElement.tagName)
-              ) {
-                nextElement.style.marginTop = contentMarginTop;
-              }
-            });
-          });
-        };
-
-        // Override code block inline styles - use function to run multiple times
-        const overrideCodeStyles = () => {
-          const codeBlocks = document.querySelectorAll(
-            ".post-content pre, .post-content pre.astro-code"
+        // Process each heading type using configuration
+        headingConfig.forEach((config) => {
+          const headings = postContent.querySelectorAll(config.selector);
+          const marginTop = getCSSVar(
+            config.marginTopVar,
+            config.defaults.marginTop
           );
-          codeBlocks.forEach((pre) => {
-            if (pre instanceof HTMLElement) {
-              // Remove inline styles first, then set new ones
-              pre.style.removeProperty("background-color");
-              pre.style.removeProperty("color");
-              pre.style.backgroundColor = "#f5f5f5";
-              pre.style.borderRadius = "8px";
-              pre.style.color = "#333";
+          const marginBottom = getCSSVar(
+            config.marginBottomVar,
+            config.defaults.marginBottom
+          );
+          const contentMarginTop = getCSSVar(
+            config.contentMarginTopVar,
+            config.defaults.contentMarginTop
+          );
 
-              // Override code element styles
-              const code = pre.querySelector("code");
-              if (code instanceof HTMLElement) {
-                code.style.removeProperty("background-color");
-                code.style.removeProperty("color");
-                code.style.backgroundColor = "transparent";
-                code.style.color = "#333";
+          headings.forEach((heading) => {
+            if (!(heading instanceof HTMLElement)) return;
 
-                // Override all span styles inside code
-                const spans = code.querySelectorAll("span");
-                spans.forEach((span) => {
-                  if (span instanceof HTMLElement) {
-                    span.style.removeProperty("color");
-                    span.style.color = "#333";
-                  }
-                });
-              }
+            // Apply heading margins
+            if (
+              config.skipFirstMarginTop &&
+              heading.previousElementSibling === null
+            ) {
+              heading.style.marginTop = "0";
+            } else {
+              heading.style.marginTop = marginTop;
+            }
+            heading.style.marginBottom = marginBottom;
+
+            // Apply content spacing after heading
+            const nextElement = heading.nextElementSibling;
+            if (
+              nextElement instanceof HTMLElement &&
+              contentTags.includes(nextElement.tagName)
+            ) {
+              nextElement.style.marginTop = contentMarginTop;
             }
           });
-        };
+        });
+      };
 
-        // Run immediately
+      // Override code block inline styles - use function to run multiple times
+      const overrideCodeStyles = () => {
+        const codeBlocks = document.querySelectorAll(
+          ".post-content pre, .post-content pre.astro-code"
+        );
+        codeBlocks.forEach((pre) => {
+          if (pre instanceof HTMLElement) {
+            // Remove inline styles first, then set new ones
+            pre.style.removeProperty("background-color");
+            pre.style.removeProperty("color");
+            pre.style.backgroundColor = "#f5f5f5";
+            pre.style.borderRadius = "8px";
+            pre.style.color = "#333";
+
+            // Override code element styles
+            const code = pre.querySelector("code");
+            if (code instanceof HTMLElement) {
+              code.style.removeProperty("background-color");
+              code.style.removeProperty("color");
+              code.style.backgroundColor = "transparent";
+              code.style.color = "#333";
+
+              // Override all span styles inside code
+              const spans = code.querySelectorAll("span");
+              spans.forEach((span) => {
+                if (span instanceof HTMLElement) {
+                  span.style.removeProperty("color");
+                  span.style.color = "#333";
+                }
+              });
+            }
+          }
+        });
+      };
+
+      // Run immediately
+      applyHeadingSpacing();
+      overrideCodeStyles();
+
+      // Also run after delays to catch any late-rendered elements
+      setTimeout(() => {
         applyHeadingSpacing();
         overrideCodeStyles();
+      }, 100);
+      setTimeout(() => {
+        applyHeadingSpacing();
+        overrideCodeStyles();
+      }, 500);
 
-        // Also run after delays to catch any late-rendered elements
-        setTimeout(() => {
-          applyHeadingSpacing();
-          overrideCodeStyles();
-        }, 100);
-        setTimeout(() => {
-          applyHeadingSpacing();
-          overrideCodeStyles();
-        }, 500);
+      // Re-run on View Transitions
+      document.addEventListener('astro:page-load', () => {
+        applyHeadingSpacing();
+        overrideCodeStyles();
       });
+    </script>
+
+    <script>
+      import mermaid from 'mermaid';
+      
+      mermaid.initialize({ startOnLoad: false });
+
+      function renderMermaid() {
+        const graphs = document.querySelectorAll('pre > code.language-mermaid');
+        
+        graphs.forEach((graph, index) => {
+          const content = graph.textContent;
+          const pre = graph.parentElement;
+          if (pre) {
+            const div = document.createElement('div');
+            div.classList.add('mermaid');
+            div.textContent = content;
+            pre.replaceWith(div);
+          }
+        });
+
+        mermaid.run({
+          querySelector: '.mermaid',
+        });
+      }
+
+      // Run on initial load
+      renderMermaid();
+      
+      // Run on View Transitions navigation
+      document.addEventListener('astro:page-load', renderMermaid);
     </script>
   </body>
 </html>

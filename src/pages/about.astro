@@ -1,5 +1,6 @@
 ---
 import "../styles/home.css";
+import { siteConfig } from "../config/site";
 ---
 
 <html lang="en">
@@ -8,17 +9,17 @@ import "../styles/home.css";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <title>About Me - Astro Blog</title>
+    <title>About Me - {siteConfig.title}</title>
   </head>
   <body>
     <!-- Navigation -->
     <nav>
-      <a href="/" class="site-name">Astro Blog</a>
+      <a href="/" class="site-name">{siteConfig.name}</a>
       <ul class="nav-menu">
-        <li><a href="/" class="menu-link">Home</a></li>
+        <li><a href="/" class="menu-link">{siteConfig.navigation.home}</a></li>
         <li><a href="/about" class="menu-link">About</a></li>
-        <li><a href="/posts" class="menu-link">Posts</a></li>
-        <li><a href="/contact" class="menu-link">Contact</a></li>
+        <li><a href="/posts" class="menu-link">{siteConfig.navigation.posts}</a></li>
+        <li><a href="/contact" class="menu-link">{siteConfig.navigation.contact}</a></li>
       </ul>
     </nav>
 
