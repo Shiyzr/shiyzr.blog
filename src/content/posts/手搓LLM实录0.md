@@ -6,6 +6,7 @@ tags: ["ai"]
 readTime: "0 min read"
 excerpt: "cs336破防实录"
 slug: "llm-notes-0"
+draft: true
 ---
 
 ## 目标

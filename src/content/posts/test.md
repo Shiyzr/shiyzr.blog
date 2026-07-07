@@ -5,6 +5,7 @@ author: "Shiyzr"
 tags: ["test"]
 readTime: "0 min read"
 excerpt: "testtest"
+draft: true
 ---
 TEST
 

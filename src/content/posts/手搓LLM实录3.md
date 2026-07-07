@@ -6,6 +6,7 @@ tags: ["ai"]
 readTime: "0 min read"
 excerpt: "cs336破防实录"
 slug: "llm-notes-3"
+draft: true
 ---
 我们搭好了框架，接下来肯定是想着怎么去优化它。
 
