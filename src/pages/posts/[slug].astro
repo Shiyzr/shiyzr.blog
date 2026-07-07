@@ -10,7 +10,10 @@ import Footer from "../../components/Footer.astro";
 import { siteConfig } from "../../config/site";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("posts")) as any[];
+  const posts = (await getCollection(
+    "posts",
+    ({ data }) => !data.draft
+  )) as any[];
   return posts
     .map((post) => {
       let slug = post.data.slug || post.slug;

@@ -8,8 +8,11 @@ import Footer from "../components/Footer.astro";
 import { siteConfig } from "../config/site";
 import { postImages, defaultPostImage } from "../config/posts-images";
 
-// Get all posts from content collection
-const allPosts = (await getCollection("posts")) as CollectionEntry<"posts">[];
+// Get published posts (draft posts are kept in repo but hidden from the site)
+const allPosts = (await getCollection(
+  "posts",
+  ({ data }) => !data.draft
+)) as CollectionEntry<"posts">[];
 
 // Convert date format from "6/27/2025" to "June 27, 2025"
 function formatDate(dateString: string): string {

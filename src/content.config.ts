@@ -13,6 +13,8 @@ const postsCollection = defineCollection({
     excerpt: z.string().optional(),
     image: z.string().optional(),
     slug: z.string().optional(),
+    /** 设为 true 时不对外展示；新文章默认 false（可见） */
+    draft: z.boolean().optional().default(false),
   }),
 });
 
